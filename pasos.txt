@@ -1,0 +1,45 @@
+1. Construir la imagen docker.
+    PS D:\Arquitectura de software\Docker> docker build -t pipes-filters .
+
+2. Crear la imagen en la app Docker
+    docker run -d -p 5000:5000 pipes-filters
+
+    Se lleva la misma la ruta y se lanza en terminal de la app de Docker
+    docker run -d -p 5000:5000 pipes-filters
+
+3. Ver la pagina en el navegador
+    http://localhost:5000/
+
+4. Para parar el contenedor en Docker se utiliza el comando
+    docker stop <Container ID>
+    docker stop 29e5cd2b8208a17ebe6b96682feb763d509a171f00cd401cea77c42b3f54cb5e
+
+-------------------------------------------------------
+
+1. Para reconstruir una imagen para ver cambios
+    docker build -t nombre-imagen:tag . # Base
+    docker build -t pipes-filters .
+
+2. Detener y eliminar el contenedor anterior
+    docker ps
+    docker stop nombre_o_id_contenedor
+    docker rm nombre_o_id_contenedor
+
+3. Lanzar un nuevo contenedor
+    docker run -d -p 5000:5000 --name nuevo_contenedor miweb:latest # Base
+    docker run -d -p 5000:5000 pipes-filters
+
+4. Eliminar imagen del contenedor
+    docker rmi pipes-filters
+
+| Flag          | Significado  | Ejemplo de uso                           | Explicación                                                                                         |
+| ------------- | ------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `-d`          | Detached     | `docker run -d nginx`                    | Ejecuta el contenedor en segundo plano (no bloquea la terminal).                                    |
+| `-p`          | Publish port | `docker run -p 8080:80 nginx`            | Expone el puerto del contenedor (80) en un puerto de tu máquina (8080). Formato: `host:contenedor`. |
+| `-t`          | TTY          | `docker run -t ubuntu`                   | Asigna una terminal interactiva (se suele usar junto con `-i`).                                     |
+| `-i`          | Interactive  | `docker run -it ubuntu`                  | Mantiene la entrada estándar abierta (permite escribir comandos dentro del contenedor).             |
+| `--name`      | Nombre       | `docker run --name miweb nginx`          | Asigna un nombre al contenedor para que no tengas que usar su ID.                                   |
+| `--rm`        | Remove       | `docker run --rm ubuntu`                 | Elimina el contenedor automáticamente cuando se detiene.                                            |
+| `-v`          | Volumen      | `docker run -v $(pwd):/app nginx`        | Monta un volumen (o carpeta local) dentro del contenedor.                                           |
+| `-e`          | Env variable | `docker run -e VAR=value ubuntu`         | Define una variable de entorno dentro del contenedor.                                               |
+| `--build-arg` | Build arg    | `docker build --build-arg VERSION=1.0 .` | Pasa variables al `Dockerfile` durante la construcción.                                             |

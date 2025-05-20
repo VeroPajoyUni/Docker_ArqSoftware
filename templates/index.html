@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Pipes and Filters - Unicomfacauca</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Demostración Arquitectura Pipes and Filters</h1>
+        <h2>Ingeniería de Sistemas - Unicomfacauca</h2>
+
+        <form method="POST">
+            <label for="texto">Ingresa el texto a procesar:</label><br>
+            <textarea id="texto" name="texto" rows="4">{{ texto_inicial or '' }}</textarea><br>
+            <input type="submit" value="Procesar Texto">
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if resultados %}
+            <!-- Contenedor y Canvas para la animación (MOVIDO AQUÍ) -->
+            <div class="canvas-container">
+                 <h2>Visualización del Pipeline:</h2>
+                 <canvas id="pipelineCanvas" width="800" height="250"></canvas>
+            </div>
+
+            <!-- Resultados de texto (AHORA DESPUÉS DEL CANVAS) -->
+            <div class="resultados">
+                <h2>Resultados del Pipeline (Texto):</h2>
+                {% for paso, resultado in resultados.items() %}
+                    <h3>{{ paso }}:</h3>
+                    <pre>{{ resultado }}</pre>
+                {% endfor %}
+                <hr>
+                <h2>Resultado Final:</h2>
+                <pre>{{ texto_final }}</pre>
+            </div>
+
+            <!-- El script permanece al final del bloque if -->
+            <!-- Pasar los datos como un atributo data-* Desde el backend Flask al frontend js -->
+            <div id="pipelineData" data-results="{{ resultados|tojson|forceescape }}"></div>
+            <!-- La función url_for() genera dinámicamente la URL correcta para acceder a este archivo estático -->
+            <!-- <script src="{{ url_for('static', filename='index.js') }}"></script> -->
+            <script src="{{ url_for('static', filename='pipeline/pipelineVisualizer.js') }}"></script>
+        {% endif %}
+    </div>
+</body>
+<footer class="footer">
+    <p>&copy; 2025 Verónica Pajoy, Maira Rivera — Estudiante de Ingeniería de Sistemas | Unicomfacauca</p>
+</footer>
+</html>
